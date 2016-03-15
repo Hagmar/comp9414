@@ -15,6 +15,7 @@ sumsq_even([_|Tail], Sum) :-
     sumsq_even(Tail, Sum).
 
 
+% TODO Remove these
 % Temporary facts
 likes(mary, apple).
 likes(mary, pear).
@@ -24,7 +25,18 @@ likes(tim, apple).
 likes(jane, apple).
 likes(jane, mango).
 
+% TODO Add comments
 all_like(_, []).
-all_like(What, [Head|Tail]) :-
-    likes(Head, What),
+all_like(What, [Person|Tail]) :-
+    likes(Person, What),
     all_like(What, Tail).
+
+
+% TODO Add comments
+% TODO Causes an error after finding solution
+sqrt_table(N, N, [[N, Result]]) :-
+    Result is sqrt(N).
+sqrt_table(N, M, [[N, NResult] | Result]) :-
+    NResult is sqrt(N),
+    NewN is N-1,
+    sqrt_table(NewN, M, Result).
