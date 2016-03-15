@@ -13,3 +13,18 @@ sumsq_even([Head|Tail], Sum) :-
     Sum is Head*Head + RestSum.
 sumsq_even([_|Tail], Sum) :-
     sumsq_even(Tail, Sum).
+
+
+% Temporary facts
+likes(mary, apple).
+likes(mary, pear).
+likes(mary, grapes).
+likes(tim, mango).
+likes(tim, apple).
+likes(jane, apple).
+likes(jane, mango).
+
+all_like(_, []).
+all_like(What, [Head|Tail]) :-
+    likes(Head, What),
+    all_like(What, Tail).
