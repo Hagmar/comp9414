@@ -61,3 +61,16 @@ chop_down([N | [M | Tail]], Result) :-
     chop_down([M | Tail], Result).
 chop_down([N| Tail], [N | Result]) :-
     chop_down(Tail, Result).
+
+
+% TODO Add comments
+% TODO Solve without cuts
+tree_eval(Value, tree(empty, z, empty), Value) :-
+    !.
+tree_eval(_, tree(empty, Eval, empty), Eval) :-
+    !.
+tree_eval(Value, tree(T1, Op, T2), Eval) :-
+    tree_eval(Value, T1, EvalLeft),
+    tree_eval(Value, T2, EvalRight),
+    Expr =.. [Op, EvalLeft, EvalRight],
+    Eval is Expr.
