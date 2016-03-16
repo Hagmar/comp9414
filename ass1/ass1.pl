@@ -51,3 +51,13 @@ function_table(N, M, Function, [[N, Result]|RestResult]) :-
     Result is Temp,
     NewN is N-1,
     function_table(NewN, M, Function, RestResult).
+
+
+% TODO Add comments
+chop_down([], []).
+chop_down([N | [M | Tail]], Result) :-
+    M is N-1,
+    !,
+    chop_down([M | Tail], Result).
+chop_down([N| Tail], [N | Result]) :-
+    chop_down(Tail, Result).
