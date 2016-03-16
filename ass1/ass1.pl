@@ -40,3 +40,14 @@ sqrt_table(N, M, [[N, NResult] | Result]) :-
     NResult is sqrt(N),
     NewN is N-1,
     sqrt_table(NewN, M, Result).
+
+
+% TODO Causes an error after finding solution
+function_table(N, N, Function, [[N, Result]]) :-
+    Temp =.. [Function, N],
+    Result is Temp.
+function_table(N, M, Function, [[N, Result]|RestResult]) :-
+    Temp =.. [Function, N],
+    Result is Temp,
+    NewN is N-1,
+    function_table(NewN, M, Function, RestResult).
