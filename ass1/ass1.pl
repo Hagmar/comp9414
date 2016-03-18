@@ -21,17 +21,6 @@ sumsq_even([Head|Tail], Sum) :-
     sumsq_even(Tail, Sum).
 
 
-% TODO Remove these
-% Temporary facts
-likes(mary, apple).
-likes(mary, pear).
-likes(mary, grapes).
-likes(tim, mango).
-likes(tim, apple).
-likes(jane, apple).
-likes(jane, mango).
-
-
 % all_like(+What, +List)
 % Succeeds if every person in the list List likes the item What.
 % "Liking" an item is represented by the predicate likes(Person, Item).
@@ -84,14 +73,22 @@ function_table(N, M, Function, [[N, Result]|RestResult]) :-
 % Binds NewList to List with all sequences of successive decreasing numbers
 % removed.
 % List should only contain integers.
-% TODO Solve without cuts
+%
+% Assignment comment:
+% A cut after "M is N-1" would mean that the second case with [X] is
+% unnecessary, as well as the inequality check in the last case. That would
+% be a much cleaner solution, as the last case could be implemented as simply
+% chop_down([N | Tail], [N | Result]) :-
+%     chop_down(Tail, Result).
+
 chop_down([], []).
+chop_down([X], [X]).
 chop_down([N | [M | Tail]], Result) :-
     M is N-1,
-    !,
     chop_down([M | Tail], Result).
-chop_down([N| Tail], [N | Result]) :-
-    chop_down(Tail, Result).
+chop_down([N | [M | Tail]], [N | Result]) :-
+    M =\= N-1,
+    chop_down([M | Tail], Result).
 
 
 % tree_eval(+Value, +Tree, -Eval)
