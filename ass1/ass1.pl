@@ -118,3 +118,36 @@ tree_eval(Value, tree(L, Op, R), Eval) :-
     tree_eval(Value, R, EvalRight),
     Expr =.. [Op, EvalLeft, EvalRight],
     Eval is Expr.
+
+% height_if_balanced(+Tree, -HiB)
+% Takes a binary tree Tree and binds HiB to the height of the tree if it's
+% balanced and -1 if it isn't.
+% Tree needs to be a valid tree of the form tree(L, D, R) where L and R are
+% trees and D is data.
+%
+% Assignment comment:
+% I am not in COMP9814 but wanted to attempt the question anyway.
+% Inserting a cut after "Diff =< 1" in the second case would remove the need
+% for any goals in the third case. height_if_balanced(_, -1) would be enough.
+% I would be interested in knowing if there is a better solution to this.
+height_if_balanced(empty, 0).
+height_if_balanced(tree(L, _, R), HiB) :-
+    height_if_balanced(L, HL),
+    height_if_balanced(R, HR),
+    sort(HL, HR, Max, Min),
+    Diff is Max-Min,
+    Diff =< 1,
+    HiB is Max+1.
+height_if_balanced(tree(L, _, R), -1) :-
+    height_if_balanced(L, HL),
+    height_if_balanced(R, HR),
+    sort(HL, HR, Max, Min),
+    Diff is Max-Min,
+    Diff > 1.
+
+% sort(A, B, Max, Min) binds Max and Min to the larger and smaller of A and B,
+% respectively.
+sort(A, B, A, B) :-
+    A > B.
+sort(A, B, B, A) :-
+    A =< B.
