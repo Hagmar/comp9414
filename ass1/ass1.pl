@@ -105,13 +105,19 @@ chop_down([N| Tail], [N | Result]) :-
 %   - tree(L, Op, R), where L and R are other trees, and Op is an arithmetic
 % operator
 %
-% TODO Solve without cuts
-tree_eval(Value, tree(empty, z, empty), Value) :-
-    !.
+% Assignment comment:
+% By adding a cut to the first two cases, it would remove the need for all
+% not-statements below. For the variable-leaves it would prevent two steps
+% of unnecessary backtracking, and for the numeric leaves it would prevent
+% one. In this case I would personally consider it more readable than the
+% non-cut solution as well.
+tree_eval(Value, tree(empty, z, empty), Value).
 tree_eval(_, tree(empty, Eval, empty), Eval) :-
-    !.
-tree_eval(Value, tree(T1, Op, T2), Eval) :-
-    tree_eval(Value, T1, EvalLeft),
-    tree_eval(Value, T2, EvalRight),
+    not(Eval = z).
+tree_eval(Value, tree(L, Op, R), Eval) :-
+    not(L = empty),
+    not(R = empty),
+    tree_eval(Value, L, EvalLeft),
+    tree_eval(Value, R, EvalRight),
     Expr =.. [Op, EvalLeft, EvalRight],
     Eval is Expr.
